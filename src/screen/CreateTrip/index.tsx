@@ -60,20 +60,23 @@ const CreateTripScreen: React.FC = () => {
                 </View>
                 <View style={styles.gap}>
                     <TextInput
-                        placeholder="StartDate"
+                        placeholder="StartDate DD/MM/YYYY"
                         onChangeText={(text) => setCreateTrip({ ...createTrip, startDate: text })}
                         value={createTrip.startDate}
                         style={styles.textinputColor}
                         mode="outlined"
+                        keyboardType="numeric"
+
                     />
                 </View>
                 <View style={styles.gap}>
                     <TextInput
-                        placeholder="EndDate"
+                        placeholder="EndDate DD/MM/YYYY"
                         onChangeText={(text) => setCreateTrip({ ...createTrip, endDate: text })}
                         value={createTrip.endDate}
                         style={styles.textinputColor}
                         mode="outlined"
+                        keyboardType="numeric"
                     />
                 </View>
                 <View style={styles.gap}>
