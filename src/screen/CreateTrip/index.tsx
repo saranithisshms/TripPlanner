@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     smallgap: {
         paddingTop: 5
     },
-  
+
     textinputColor: {
         color: 'white'
     },
@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
     },
     textcolorsBtn: {
         color: 'white',
-        fontSize:18,
-        fontWeight:'bold',
-        
-      },
+        fontSize: 18,
+        fontWeight: 'bold',
+
+    },
 });
 
 
