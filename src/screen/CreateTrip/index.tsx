@@ -129,6 +129,7 @@ const CreateTripScreen: React.FC = () => {
                     (tx, results) => {
                         if (results.rowsAffected > 0) {
                             console.log('Data inserted successfully');
+                            navigation.navigate('Login');
                         } else {
                             console.log('Failed to insert data');
                         }
@@ -139,7 +140,7 @@ const CreateTripScreen: React.FC = () => {
                 );
             });
 
-            console.log('Transaction complete');
+          
         } catch (error) {
             // Handle errors
             console.error('Error:', error);
@@ -188,9 +189,7 @@ const CreateTripScreen: React.FC = () => {
                         style={styles.textinputColor}
                         mode="outlined"
                         keyboardType="numeric"
-
                     />
-
                 </View>
                 <Text style={globalStyles.helpertext}>{error.startDate}</Text>
                 <View style={styles.gap}>
