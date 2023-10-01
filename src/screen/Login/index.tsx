@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import colors from '../../globalStyles/color';
 
 interface LoginState {
   email: string;
@@ -92,7 +93,7 @@ const LoginScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'pink',
+    backgroundColor: colors.primaryColor,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,

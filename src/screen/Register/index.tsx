@@ -5,6 +5,7 @@ import { TextInput } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import colors from '../../globalStyles/color';
 
 interface RegistrationState {
   email: string;
@@ -64,7 +65,7 @@ const RegistrationScreen: React.FC = () => {
 };
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'pink',
+    backgroundColor: colors.primaryColor,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,

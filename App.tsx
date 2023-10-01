@@ -15,6 +15,7 @@ import {
   Text,
   useColorScheme,
   View,
+LogBox
 } from 'react-native';
 
 import {
@@ -29,7 +30,7 @@ import NavigationPage from './src/stack';
 
 
 function App(): JSX.Element {
-
+  LogBox.ignoreLogs(['Warning message']);
   return (
    
       <NavigationPage/>

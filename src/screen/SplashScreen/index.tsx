@@ -3,9 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { colors } from '../../globalStyles/color';
 
 const SplashScreen = () => {
   const [isVisible, setIsVisible] = useState(true);
+
+  
 
   useEffect(() => {
     setTimeout(() => {
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    color: 'pink',
+    color: colors.primaryColor,
     fontSize: 30,
     fontWeight: 'bold',
   },

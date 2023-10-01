@@ -1,42 +1,116 @@
-import React, { useState } from 'react';
-import { Alert, Button, Text, TouchableOpacity, View, StyleSheet, Image, } from 'react-native';
-import { Header, HeaderProps, } from '@rneui/themed';
+import React, { useState, useEffect } from 'react';
+import { Alert, Button, Text, TouchableOpacity, View, StyleSheet, Image, Linking, LogBox } from 'react-native';
 import auth from '@react-native-firebase/auth';
-
+import { Header, HeaderProps, } from '@rneui/themed';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Icon } from '@rneui/themed';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-interface HomeState {
-  email: string;
-  password: string;
-}
-
-const HomeScreen: React.FC = () => {
-  const [state, setState] = useState<HomeState>({
-    email: '',
-    password: '',
-  });
-
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+import { colors } from '../../globalStyles/color';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SQLite from 'react-native-sqlite-storage';
+import TripCard from '../../component/cardTrip';
 
 
+LogBox.ignoreLogs(["same key"]);
+
+const HomeScreen = ({ }) => {
+
+
+  const [userData, setUserData] = useState<any>([]);
+
+  // Initialize the SQLite database
+  const db = SQLite.openDatabase(
+    {
+      name: 'usertrip.db',
+      location: 'default',
+    },
+    () => {
+      console.log('Database opened successfully');
+    },
+    (error) => {
+      console.error('Error opening database: ', error);
+    }
+  );
+
+
+  // ...
+
+  const navigation = useNavigation<NavigationProp<YourNaviatorParams>>();
+  useEffect(() => {
+    // Retrieve the user_id from AsyncStorage
+    AsyncStorage.getItem('SET_USER_DATA')
+      .then((user_id) => {
+        // Fetch user data from the database based on user_id
+        if (user_id) {
+          db.transaction((tx) => {
+            tx.executeSql(
+              'SELECT * FROM table_user WHERE user_id = ?',
+              [user_id],
+              (tx, results) => {
+                const userDataList: any[] = [];
+                for (let i = 0; i < results.rows.length; i++) {
+                  userDataList.push(results.rows.item(i));
+                }
+                setUserData(userDataList);
+
+              },
+              (error) => {
+                console.error('Error fetching user data: ', error);
+              }
+            );
+          });
+        }
+      })
+      .catch((error) => {
+        console.error('Error retrieving user_id from AsyncStorage: ', error);
+      });
+  }, []);
+
+  console.log(userData)
 
   async function logout() {
 
     await AsyncStorage.removeItem('SET_USER_DATA');
-    navigation.push('Login');
+    navigation.navigate('Login');
     auth().signOut();
 
   }
 
 
-  function gotoMakeTrip() {
-    navigation.push('CreateTrip')
-
-  }
 
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+
+
+
+
+  const RowOfIcons = () => {
+
+    return (
+      <View style={styles.rowStyles}>
+        <View style={styles.iconBtn}  >
+          <TouchableOpacity onPress={() => {
+            Linking.openURL('https://www.accuweather.com/');
+          }}>
+            <MaterialCommunityIcons name="weather-hail" size={42} color={colors.black} />
+          </TouchableOpacity>
+
+        </View>
+        <View style={styles.iconBtn}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('CreateTrip')
+          }}>
+            <MaterialIcons name="add" size={42} color={colors.black} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={{ width: '100%', height: '100%', }}>
       <Header
@@ -47,18 +121,26 @@ const HomeScreen: React.FC = () => {
             <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => {
               logout();
             }}>
-              <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'white' }}>LogOut</Text>
+              <AntDesign name="logout" size={24} color={colors.white} />
             </TouchableOpacity>
           </View>
         }
         centerComponent={{ text: 'MAKE A TRIP PLAN', style: styles.heading }}
       />
-      <View style={{ padding: 5, margin: 10 }}>
-        <TouchableOpacity style={styles.borderButton} onPress={() => gotoMakeTrip()}>
-          <Text style={styles.textcolorBtn}>ADD NEW TRIP + </Text>
-        </TouchableOpacity>
 
 
+      {userData.map((user: any) => {
+        return (
+          <View key={user.id}>
+            <TripCard user={user} />
+          </View>
+        );
+      })}
+
+
+
+      <View style={styles.bottomfixed}>
+        {RowOfIcons()}
       </View>
     </View>
   );
@@ -68,7 +150,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFC0CB',
+    backgroundColor: colors.primaryColor,
     marginBottom: 20,
     width: '100%',
     paddingVertical: 15,
@@ -101,6 +183,23 @@ const styles = StyleSheet.create({
     borderStyle: 'dotted',
     alignItems: 'center'
   },
+  rowStyles: {
+    margin: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+  },
+  bottomfixed: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute', //Here is the trick
+    bottom: 0, //Here is the trick
+  },
+  iconBtn: {
+    width: '50%',
+    alignItems: 'center',
+  }
 });
 
 
