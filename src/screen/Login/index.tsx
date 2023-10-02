@@ -4,9 +4,9 @@ import firebase from '@react-native-firebase/app';
 import { TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import colors from '../../globalStyles/color';
+import Toast from 'react-native-simple-toast';
 
 interface LoginState {
   email: string;
@@ -21,25 +21,38 @@ const LoginScreen: React.FC = () => {
 
   const handleLogin = async () => {
 
-    try {
+    if (state.email != "" && state.password != '') {
 
-      const response = await firebase.auth().signInWithEmailAndPassword(state.email, state.password);
-      if (response != null) {
+      try {
 
-        try {
-          await AsyncStorage.setItem('SET_USER_DATA', response.user.uid);
-          navigation.push('Home');
-        } catch (error) {
-          // Handle error
+        const response = await firebase.auth().signInWithEmailAndPassword(state.email, state.password);
+        if (response != null) {
+
+          try {
+            await AsyncStorage.setItem('SET_USER_DATA', response.user.uid);
+            navigation.push('Home');
+            setState({ ...state, email: '',password:'' })
+            Toast.show('Success message', Toast.SHORT);
+          } catch (error) {
+            
+            Toast.show('Login is Failed', Toast.LONG);
+          }
+
         }
 
+
+      } catch (error) {
+        // Handle error
+        console.log(error)
+        Toast.show('Login is Failed', Toast.LONG, {
+          backgroundColor: 'blue',
+        });
       }
+    } else {
 
-
-    } catch (error) {
-      // Handle error
-      console.log(error)
+      Alert.alert('Please all Details to Login')
     }
+
   };
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -51,13 +64,13 @@ const LoginScreen: React.FC = () => {
   return (
     <View style={styles.screenMargin}>
       <View style={styles.logingap}>
-        
+
         <Text style={{ fontWeight: 'bold', fontSize: 18 }}>   Login ! Make your Plane True</Text>
 
       </View>
       <View style={styles.smallgap}>
         <TextInput
-          placeholder="Email"
+          label="Email"
           onChangeText={(text) => setState({ ...state, email: text })}
           value={state.email}
           style={styles.textinputColor}
@@ -67,7 +80,7 @@ const LoginScreen: React.FC = () => {
       </View>
       <View style={styles.gap}>
         <TextInput
-          placeholder="Password"
+          label="Password"
           onChangeText={(text) => setState({ ...state, password: text })}
           value={state.password}
           secureTextEntry
@@ -82,6 +95,7 @@ const LoginScreen: React.FC = () => {
           </View>
         </TouchableOpacity>
       </View>
+
       <View style={styles.registerView}>
         <TouchableOpacity onPress={handlePress}>
           <Text style={styles.registertext}>Register for New user</Text>
@@ -123,9 +137,9 @@ const styles = StyleSheet.create({
   },
   textcolorBtn: {
     color: 'white',
-    fontSize:18,
-    fontWeight:'bold',
-    textTransform:'capitalize'
+    fontSize: 18,
+    fontWeight: 'bold',
+    textTransform: 'capitalize'
   },
   logingap: {
     paddingBottom: 10

@@ -111,6 +111,12 @@ const HomeScreen = ({ }) => {
       </View>
     );
   };
+
+  const goToOtherPage = (id:any) => {
+    navigation.navigate('TaskListing', { tripId: id });
+  };
+
+
   return (
     <View style={{ width: '100%', height: '100%', }}>
       <Header
@@ -129,13 +135,27 @@ const HomeScreen = ({ }) => {
       />
 
 
-      {userData.map((user: any) => {
-        return (
-          <View key={user.id}>
-            <TripCard user={user} />
-          </View>
-        );
-      })}
+
+      <View style={styles.subContainer}>
+
+
+        {userData.map((user: any) => {
+          return (
+            <View key={user.id}>
+              <TripCard
+                name={user.name}
+                place={user.place}
+                startDate={user.startDate}
+                endDate={user.endDate}
+                onPress={() => goToOtherPage(user.id)}
+
+              />
+            </View>
+          );
+        })}
+
+      </View>
+
 
 
 
@@ -199,6 +219,9 @@ const styles = StyleSheet.create({
   iconBtn: {
     width: '50%',
     alignItems: 'center',
+  },
+  subContainer: {
+    margin: 5
   }
 });
 

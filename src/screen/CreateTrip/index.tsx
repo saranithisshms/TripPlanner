@@ -140,7 +140,7 @@ const CreateTripScreen: React.FC = () => {
                 );
             });
 
-          
+
         } catch (error) {
             // Handle errors
             console.error('Error:', error);
@@ -162,7 +162,7 @@ const CreateTripScreen: React.FC = () => {
 
                 <View style={styles.smallgap}>
                     <TextInput
-                        placeholder="TripName"
+                        label="TripName"
                         onChangeText={(text) => setCreateTrip({ ...createTrip, tripName: text })}
                         value={createTrip.tripName}
                         style={styles.textinputColor}
@@ -170,10 +170,10 @@ const CreateTripScreen: React.FC = () => {
                     />
                 </View>
                 {error.tripName &&
-                <Text style={globalStyles.helpertext}>{error.tripName}</Text> }
+                    <Text style={globalStyles.helpertext}>{error.tripName}</Text>}
                 <View style={styles.gap}>
                     <TextInput
-                        placeholder="destination"
+                        label="destination"
                         onChangeText={(text) => setCreateTrip({ ...createTrip, destination: text })}
                         value={createTrip.destination}
                         style={styles.textinputColor}
@@ -183,7 +183,7 @@ const CreateTripScreen: React.FC = () => {
                 <Text style={globalStyles.helpertext}>{error.destination}</Text>
                 <View style={styles.gap} >
                     <TextInput
-                        placeholder="StartDate DD/MM/YYYY"
+                        label="StartDate DD/MM/YYYY"
                         onChangeText={(text) => setCreateTrip({ ...createTrip, startDate: text })}
                         value={createTrip.startDate}
                         style={styles.textinputColor}
@@ -194,7 +194,7 @@ const CreateTripScreen: React.FC = () => {
                 <Text style={globalStyles.helpertext}>{error.startDate}</Text>
                 <View style={styles.gap}>
                     <TextInput
-                        placeholder="EndDate DD/MM/YYYY"
+                        label="EndDate DD/MM/YYYY"
                         onChangeText={(text) => setCreateTrip({ ...createTrip, endDate: text })}
                         value={createTrip.endDate}
                         style={styles.textinputColor}
@@ -240,7 +240,8 @@ const styles = StyleSheet.create({
         margin: 10
     },
     smallgap: {
-        paddingTop: 5
+        paddingTop: 10,
+        paddingBottom:20
     },
 
     textinputColor: {

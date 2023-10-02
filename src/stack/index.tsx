@@ -7,6 +7,8 @@ import HomeScreen from '../screen/Home';
 import SplashScreen from '../screen/SplashScreen';
 import CreateTripScreen from '../screen/CreateTrip';
 import { NavigationContainer } from '@react-navigation/native';
+import TaskListing from '../screen/TaskLising';
+import CreateTaskTripScreen from '../screen/CreateTask';
 
 
 const Stack = createStackNavigator();
@@ -21,6 +23,8 @@ const navigationPage = () => {
         <Stack.Screen name="Home" component={HomeScreen}
         />
         <Stack.Screen name="CreateTrip" component={CreateTripScreen} />
+        <Stack.Screen name="TaskListing" component={TaskListing} />
+        <Stack.Screen name="CreateTask" component={CreateTaskTripScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

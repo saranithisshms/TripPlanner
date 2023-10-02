@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  Button,View, Alert ,StyleSheet, TouchableOpacity, Text} from 'react-native';
+import { Button, View, Alert, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import { TextInput } from 'react-native-paper';
 import auth from '@react-native-firebase/auth';
@@ -20,41 +20,66 @@ const RegistrationScreen: React.FC = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const handleRegister = async () => {
-    try {
+
+    if (state.email != '' && state.password != '') {
+      try {
         const response = await auth().createUserWithEmailAndPassword(state.email, state.password);
-       
-        navigation.push('Login');
-    } catch (error) {
-      console.log(error)
+
+
+        if(response != null){
+          navigation.push('Login');
+          setState({ ...state, email: '',password:'' })
+          console.log(response)
+        }
+
+      
+      } catch (error) {
+        console.log(error)
+      }
+
+    }
+    else {
+
+      Alert.alert('All Fields Are Required  to Resigster')
     }
   };
 
   return (
-    <View  style={styles.screenMargin}>
-    <View style={styles.logingap}>
-      <Text style={{ fontWeight:'bold' ,fontSize:24}}>Register</Text>
+    <View style={styles.screenMargin}>
+      <View style={styles.logingap}>
+        <Text style={{ fontWeight: 'bold', fontSize: 24 }}>Register ! Get Plans Come True</Text>
       </View>
-       <View style={styles.smallgap}>
-      <TextInput
-        placeholder="Email"
-        onChangeText={(text) => setState({ ...state, email: text })}
-        value={state.email}
-        style={styles.textinputColor}
-        mode="outlined"
-      />
-      </View>
-      <View style={styles.gap}>
-      <TextInput
-        placeholder="Password"
-        onChangeText={(text) => setState({ ...state, password: text })}
-        value={state.password}
-        secureTextEntry
-        style={styles.textinputColor}
-        mode="outlined"
-      />
+      <View style={styles.smallgap}> 
+        <TextInput
+          label="Email"
+          onChangeText={(text) => setState({ ...state, email: text })}
+          value={state.email}
+          style={styles.textinputColor}
+          mode="outlined"
+        />
       </View>
       <View style={styles.gap}>
-      <TouchableOpacity  onPress={handleRegister}>
+        <TextInput
+          label="Password"
+          onChangeText={(text) => setState({ ...state, password: text })}
+          value={state.password}
+          secureTextEntry
+          style={styles.textinputColor}
+          mode="outlined"
+        />
+      </View>
+      {/* <View style={styles.gap}>
+        <TextInput
+          label="Password"
+          onChangeText={(text) => setState({ ...state, password: text })}
+          value={state.password}
+          secureTextEntry
+          style={styles.textinputColor}
+          mode="outlined"
+        />
+      </View> */}
+      <View style={styles.gap}>
+        <TouchableOpacity onPress={handleRegister}>
           <View style={styles.button}>
             <Text style={styles.textcolorBtn}>Register</Text>
           </View>
@@ -69,16 +94,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
-    padding:15
+    padding: 15
   },
   gap: {
-    paddingTop: 15
+    paddingTop: 20
   },
   screenMargin: {
     padding: 15,
     margin: 10,
-    justifyContent:'center',
-    flex:1
+    justifyContent: 'center',
+    flex: 1
   },
   smallgap: {
     paddingTop: 15
@@ -86,17 +111,17 @@ const styles = StyleSheet.create({
   textinputColor: {
     backgroundColor: '#ffff'
   },
-  registertext:{
+  registertext: {
     paddingTop: 15, alignItems: 'center',
   },
-  textcolorBtn:{
+  textcolorBtn: {
     color: 'white',
-    fontSize:18,
-    fontWeight:'bold',
-    textTransform:'capitalize'
+    fontSize: 18,
+    fontWeight: 'bold',
+    textTransform: 'capitalize'
   },
-  logingap:{
-    paddingBottom:10 
+  logingap: {
+    paddingBottom: 10
   }
 });
 

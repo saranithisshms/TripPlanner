@@ -13,11 +13,15 @@ const tripsListing = () => {
 
   return (
     <View>
-      {trips.map((trip) => (
+      {/* {trips.map((trip) => (
         <TripCard key={trip.name} trip={trip} />
-      ))}
+      ))} */}
     </View>
   );
 };
+
+
+
+
 
 export default tripsListing;
